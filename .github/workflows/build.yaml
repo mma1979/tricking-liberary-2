@@ -12,6 +12,6 @@ jobs:
       - name: List field in Directory
         run: ls
       - name: Build Api
-        run:  dotnet build ./TrickingLiberary.Api/TrickingLiberary.Api.cspro
+        run:  dotnet build ./TrickingLiberary.Api
       - name: Check npm
         run: npm -v
