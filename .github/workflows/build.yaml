@@ -13,5 +13,7 @@ jobs:
         run: ls
       - name: Build Api
         run:  dotnet build ./TrickingLiberary.Api
+      - name: List field in Directory
+        run: ls ./TrickingLiberary.Api -R
       - name: Check npm
         run: npm -v
