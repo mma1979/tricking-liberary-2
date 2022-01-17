@@ -4,7 +4,7 @@ namespace TrickingLiberary.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class Home: ControllerBase
+    public class HomeController: ControllerBase
     {
         [HttpGet]
         public string Index()
