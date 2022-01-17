@@ -5,7 +5,7 @@ const initState = () => ({
   version: 1.0
 });
 
-export const state = initState();
+export const state = initState;
 
 export const mutations = {
   setMessage(state, message){
@@ -18,13 +18,13 @@ export const mutations = {
 
 export  const actions = {
   // async fetchMessage({commit}){
-  //   const message = (await Axios.get("http://localhost:51559/api/home")).data;
+  //   const message = (await Axios.get("http://localhost:5000/api/home")).data;
   //   console.log(message)
   //   commit("setMessage", message);
   // }
 
   async nuxtServerInit({commit, dispatch}){
-    const message = (await Axios.get("http://localhost:51559/api/home")).data;
+    const message = (await Axios.get("http://localhost:5000/api/home")).data;
     console.log(message)
     commit("setMessage", message);
     await dispatch("tricks/fetchTricks")
