@@ -13,8 +13,6 @@
       <v-btn @click="saveTrick">Save Trick</v-btn>
     </div>
 
-    {{message}}
-    <v-btn @click="reset">Reset Message</v-btn>
     <v-btn @click="resetTricks">Reset Tricks</v-btn>
   </div>
 </template>
@@ -31,18 +29,11 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      message: state => state.message,
-      version: state => state.version
-    }),
     ...mapState('tricks', {
       tricks: state => state.tricks
     })
   },
   methods: {
-    ...mapMutations({
-      reset: 'reset'
-    }),
     ...mapMutations({
       resetTricks: 'tricks/reset',
       setTricks: 'tricks/setTricks'
