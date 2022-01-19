@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Net.Http.Headers;
 
 namespace TrickingLiberary.Api.Controllers
 {
@@ -17,6 +19,17 @@ namespace TrickingLiberary.Api.Controllers
         {
             _env = env;
         }
+
+        [HttpGet("{video}")]
+        public IActionResult GetVideo(string video)
+        {
+            var savPath = Path.Combine(_env.WebRootPath, "videos", video);
+             var fileStream = new FileStream(savPath, FileMode.Open, FileAccess.Read);
+             var provider = new FileExtensionContentTypeProvider();
+             provider.TryGetContentType(video, out var contentType);
+            return new FileStreamResult(fileStream, contentType);
+        }
+        
         
         [HttpPost]
         public async Task<IActionResult> UploadVideo(IFormFile video)
@@ -28,7 +41,7 @@ namespace TrickingLiberary.Api.Controllers
             await using var stream = new FileStream(savPath, FileMode.Create, FileAccess.Write);
             await video.CopyToAsync(stream);
 
-            return Ok();
+            return Ok(fileName);
         }
     }
 }
