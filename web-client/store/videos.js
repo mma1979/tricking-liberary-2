@@ -1,13 +1,22 @@
 ﻿const initState = () => ({
   uploadPromise: null,
-  active: false
+  active: false,
+  type: ""
 });
+
+const UPLOAD_TYPE = {
+  TRICK: "UPLOAD_TYPE_TRICK",
+  SUBMISSION: "UPLOAD_TYPE_SUBMISSION",
+}
 
 export const state = initState;
 
 export const mutations = {
   toggleActivity(state){
     state.active = !state.active;
+    if (!state.active){
+      Object.assign(state, initState());
+    }
   },
   setTask(state, {uploadPromise}) {
     state.uploadPromise = uploadPromise

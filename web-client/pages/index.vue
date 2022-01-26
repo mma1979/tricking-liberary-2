@@ -11,66 +11,58 @@
       </div>
     </div>
 
-    <v-dialog v-model="active" width="500">
+    <v-dialog :value="active" persistent width="500">
 
       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Upload
-        </v-card-title>
+        <v-stepper v-model="step">
+          <v-stepper-header>
+            <v-stepper-step :complete="step > 1" step="1">
+              Upload Video
+            </v-stepper-step>
 
-        <v-card-text>
-          <v-stepper v-model="step">
-            <v-stepper-header>
-              <v-stepper-step :complete="step > 1" step="1">
-                Upload Video
-              </v-stepper-step>
+            <v-divider></v-divider>
 
-              <v-divider></v-divider>
+            <v-stepper-step :complete="step > 2" step="2">
+              Trick Information
+            </v-stepper-step>
 
-              <v-stepper-step :complete="step > 2" step="2">
-                Trick Information
-              </v-stepper-step>
+            <v-divider></v-divider>
 
-              <v-divider></v-divider>
+            <v-stepper-step step="3">
+              Confirmation
+            </v-stepper-step>
+          </v-stepper-header>
 
-              <v-stepper-step step="3">
-                Confirmation
-              </v-stepper-step>
-            </v-stepper-header>
-
-            <v-stepper-items>
-              <v-stepper-content step="1">
-                <div>
-                  <v-file-input label="Choose video" accept="video/*" @change="handleFile"></v-file-input>
-                </div>
+          <v-stepper-items>
+            <v-stepper-content step="1">
+              <div>
+                <v-file-input label="Choose video" accept="video/*" @change="handleFile"></v-file-input>
+              </div>
 
 
-              </v-stepper-content>
+            </v-stepper-content>
 
-              <v-stepper-content step="2">
-                <div>
-                  <v-text-field label="Trick Name" v-model="trickName"/>
-                  <v-btn @click="saveTrick">Save Trick</v-btn>
-                </div>
+            <v-stepper-content step="2">
+              <div>
+                <v-text-field label="Trick Name" v-model="trickName"/>
+                <v-btn @click="saveTrick">Save Trick</v-btn>
+              </div>
 
 
-              </v-stepper-content>
+            </v-stepper-content>
 
-              <v-stepper-content step="3">
-                <div>
-                  Success
-                </div>
-              </v-stepper-content>
-            </v-stepper-items>
-          </v-stepper>
-        </v-card-text>
-
+            <v-stepper-content step="3">
+              <div>
+                Success
+              </div>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="toggleActivity">
-            I accept
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -81,7 +73,6 @@
 
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex';
-import Axios from "axios";
 
 export default {
   name: "index.vue",
@@ -113,7 +104,7 @@ export default {
       await this.createTrick({trick: {name: this.trickName, video: video}});
       this.trickName = '';
       this.step++;
-      this.resetVideos();
+
     },
     async handleFile(file) {
       if (!file) return;
@@ -122,6 +113,7 @@ export default {
       form.append("video", file);
       this.startUploadVideo({form});
       this.step++;
+      this.resetVideos();
     }
   }
 }
