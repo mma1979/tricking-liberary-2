@@ -11,52 +11,70 @@
       </div>
     </div>
 
+    <v-dialog v-model="active" width="500">
 
-    <v-stepper v-model="step">
-      <v-stepper-header>
-        <v-stepper-step :complete="step > 1" step="1">
-          Upload Video
-        </v-stepper-step>
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+          Upload
+        </v-card-title>
+
+        <v-card-text>
+          <v-stepper v-model="step">
+            <v-stepper-header>
+              <v-stepper-step :complete="step > 1" step="1">
+                Upload Video
+              </v-stepper-step>
+
+              <v-divider></v-divider>
+
+              <v-stepper-step :complete="step > 2" step="2">
+                Trick Information
+              </v-stepper-step>
+
+              <v-divider></v-divider>
+
+              <v-stepper-step step="3">
+                Confirmation
+              </v-stepper-step>
+            </v-stepper-header>
+
+            <v-stepper-items>
+              <v-stepper-content step="1">
+                <div>
+                  <v-file-input label="Choose video" accept="video/*" @change="handleFile"></v-file-input>
+                </div>
+
+
+              </v-stepper-content>
+
+              <v-stepper-content step="2">
+                <div>
+                  <v-text-field label="Trick Name" v-model="trickName"/>
+                  <v-btn @click="saveTrick">Save Trick</v-btn>
+                </div>
+
+
+              </v-stepper-content>
+
+              <v-stepper-content step="3">
+                <div>
+                  Success
+                </div>
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-stepper>
+        </v-card-text>
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="step > 2" step="2">
-          Trick Information
-        </v-stepper-step>
-
-        <v-divider></v-divider>
-
-        <v-stepper-step step="3">
-          Confirmation
-        </v-stepper-step>
-      </v-stepper-header>
-
-      <v-stepper-items>
-        <v-stepper-content step="1">
-          <div>
-            <v-file-input label="Choose video" accept="video/*" @change="handleFile"></v-file-input>
-          </div>
-
-
-        </v-stepper-content>
-
-        <v-stepper-content step="2">
-          <div>
-            <v-text-field label="Trick Name" v-model="trickName"/>
-            <v-btn @click="saveTrick">Save Trick</v-btn>
-          </div>
-
-
-        </v-stepper-content>
-
-        <v-stepper-content step="3">
-          <div>
-            Success
-          </div>
-        </v-stepper-content>
-      </v-stepper-items>
-    </v-stepper>
-
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="toggleActivity">
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
@@ -75,18 +93,19 @@ export default {
   },
   computed: {
     ...mapState('tricks', ['tricks']),
-    ...mapState('videos', ['uploadPromise']),
+    ...mapState('videos', ['uploadPromise', 'active']),
   },
   methods: {
     ...mapMutations({
       resetTricks: 'tricks/reset',
       setTricks: 'tricks/setTricks',
-      resetVideos: 'videos/reset'
+      resetVideos: 'videos/reset',
+      toggleActivity: 'videos/toggleActivity'
     }),
     ...mapActions('tricks', ['createTrick']),
     ...mapActions('videos', ['startUploadVideo']),
     async saveTrick() {
-      if(!this.uploadPromise){
+      if (!this.uploadPromise) {
         console.log("uploadPromise is null");
         return;
       }

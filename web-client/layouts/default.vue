@@ -9,19 +9,11 @@
 
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn depressed v-bind="attrs" v-on="on">
+          <v-btn depressed @click="toggleActivity">
             Upload
           </v-btn>
         </template>
 
-        <v-list>
-          <v-list-item @click="()=>{}">
-            <v-list-item-title>Trick</v-list-item-title>
-          </v-list-item>
-          <v-list-item >
-            <v-list-item-title>Submission</v-list-item-title>
-          </v-list-item>
-        </v-list>
       </v-menu>
     </v-app-bar>
     <v-main>
@@ -34,5 +26,10 @@
 </template>
 
 <script>
-export default {}
+import {mapMutations} from 'vuex';
+export default {
+  methods:{
+    ...mapMutations("videos", ["toggleActivity"])
+  }
+}
 </script>
