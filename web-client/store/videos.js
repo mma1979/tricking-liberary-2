@@ -1,17 +1,19 @@
 ﻿const initState = () => ({
   uploadPromise: null,
   active: false,
-  type: ""
+  type: "",
+  step: 1
 });
 
-const UPLOAD_TYPE = {
-  TRICK: "UPLOAD_TYPE_TRICK",
-  SUBMISSION: "UPLOAD_TYPE_SUBMISSION",
-}
+
 
 export const state = initState;
 
 export const mutations = {
+  setType(state, {type}){
+    state.type = type;
+    state.step++
+  },
   toggleActivity(state){
     state.active = !state.active;
     if (!state.active){
@@ -20,6 +22,7 @@ export const mutations = {
   },
   setTask(state, {uploadPromise}) {
     state.uploadPromise = uploadPromise
+    state.step++
   },
   reset(state) {
     Object.assign(state, initState());
@@ -32,5 +35,9 @@ export const actions = {
     // using axios config in nuxt.config.js
     const uploadPromise = this.$axios.$post(`/api/videos`, form);
     commit("setTask", {uploadPromise});
+  },
+  async createTrick({commit, dispatch}, {trick}){
+    await this.$axios.post(`/api/tricks`, trick);
+    await dispatch("tricks/fetchTricks");
   }
 }
